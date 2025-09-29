@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import mtgIcon from './mtg.png';
 import ForTrade from './ForTrade';
+import TradePage from './TradePage';
 function App() {
   return (
     <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -11,7 +12,7 @@ function App() {
         </div>
       </div>
       <div style={{ flex: 1, width: '100%' }}>
-        <ForTrade />
+        <TradePage />
       </div>
     </div>
   );
