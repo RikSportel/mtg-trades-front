@@ -109,3 +109,36 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   display: block;
 }
+
+[data-theme="dark"] .card-container {
+  background: #23232b;
+  border-color: #444;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  color: #e0e0e0;
+}
+[data-theme="dark"] .card-image {
+  background: #23232b;
+}
+[data-theme="dark"] .card-name {
+  color: #e0e0e0;
+}
+[data-theme="dark"] .card-price,
+[data-theme="dark"] .card-amount {
+  color: #b0b0b0;
+}
+[data-theme="dark"] .card-foil {
+  color: #b39ddb;
+}
+[data-theme="dark"] .card-popup {
+  background: rgba(20,20,30,0.85);
+}
+[data-theme="dark"] .card-popup-inner {
+  background: #23232b;
+  color: #e0e0e0;
+}
+[data-theme="dark"] .card-popup-close {
+  color: #e0e0e0;
+}
+[data-theme="dark"] .card-popup-img {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
