@@ -53,3 +53,30 @@
 .filter-foil-text {
   font-size: 9px;
 }
+
+[data-theme="dark"] .filters-container {
+  border-color: #444;
+  background: #222;
+  color: #e0e0e0;
+}
+[data-theme="dark"] .filters-row {
+  /* No change needed, inherits container bg */
+}
+[data-theme="dark"] .filter-box {
+  border-color: #444;
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+[data-theme="dark"] .filter-label,
+[data-theme="dark"] .filter-radio-text,
+[data-theme="dark"] .filter-foil-text {
+  color: #e0e0e0;
+}
+[data-theme="dark"] .filter-input {
+  background: #222;
+  color: #e0e0e0;
+  border-color: #444;
+}
+[data-theme="dark"] .filter-radio-label {
+  color: #e0e0e0;
+}

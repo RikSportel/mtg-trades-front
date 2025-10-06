@@ -6,3 +6,25 @@
 .App-link {
   color: #61dafb;
 }
+
+.headerdiv {
+  background-color: #ffffff
+}
+
+[data-theme="dark"] {
+  background-color: #181818;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .App {
+  background-color: #222;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .App-link {
+  color: #90caf9;
+}
+
+[data-theme="dark"] .headerdiv {
+  background-color: #242424;
+}

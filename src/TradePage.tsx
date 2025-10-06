@@ -13,14 +13,14 @@ const TradePage: React.FC = () => {
       .then(data => {
         const mappedCards = Object.values(data).map((card: any) => {
           const scryfall = card.scryfall || {};
-          return {
+            return {
             imageUrl: scryfall.image_uris?.normal,
             name: scryfall.name,
-            price: scryfall.prices?.eur_foil,
+            price: card.foil ? scryfall.prices?.eur_foil : scryfall.prices?.eur,
             amount: card.amount,
             foil: !!card.foil,
             colors: scryfall.colors || [],
-          };
+            };
         });
         setCards(mappedCards);
         setLoading(false);
