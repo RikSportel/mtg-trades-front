@@ -61,9 +61,7 @@ const Card: React.FC<CardProps> = ({ imageUrl, name, foilPrice, price, cardData 
             )}
           </tbody>
         </table>
-        
-        {/* <div className={`card-foil${foil ? '' : ' invisible'}`}>{foil ? 'Foil' : ''}</div> */}
-      </div>
+        </div>
       {showPopup && imageUrl && (
         <div className="card-popup" onClick={() => setShowPopup(false)}>
           <div className="card-popup-inner" onClick={e => e.stopPropagation()}>
@@ -71,6 +69,32 @@ const Card: React.FC<CardProps> = ({ imageUrl, name, foilPrice, price, cardData 
               &#10005;
             </button>
             <img className="card-popup-img" src={imageUrl} alt={name || 'Card'} />
+            <table className="card-popup-notes">
+              <thead>
+                <tr>
+                  <th colSpan={2} style={{ textAlign: 'center' }}>Notes:</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                  {Array.isArray(cardData) && cardData.length > 0 ? (
+                    cardData.map((obj: any, idx: number) => (
+                      <React.Fragment key={idx}>
+                        <tr>
+                        <td style={{ fontWeight: 'bold', verticalAlign: 'top' }}>{obj.finish}:</td>
+                        <td>{obj.notes || ''}</td>
+                        </tr>
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <><tr>
+                      <td colSpan={2}>No Card Data</td>
+                      </tr>
+                    </>
+                  )}
+                
+              </tbody>
+            </table>
           </div>
         </div>
       )}
