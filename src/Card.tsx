@@ -4,14 +4,12 @@ import './Card.css';
 interface CardProps {
   imageUrl?: string;
   name?: string;
+  foilPrice?: string | number;
   price?: string | number;
-  amount?: number;
-  foil?: boolean;
+  cardData?: any;
 }
 
-const CARD_HEIGHT = 250; // Further reduced height for card
-
-const Card: React.FC<CardProps> = ({ imageUrl, name, price, amount, foil }) => {
+const Card: React.FC<CardProps> = ({ imageUrl, name, foilPrice, price, cardData }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -32,9 +30,39 @@ const Card: React.FC<CardProps> = ({ imageUrl, name, price, amount, foil }) => {
           )}
         </div>
         <div className="card-name">{name || 'Name'}</div>
-        <div className="card-price">{price !== undefined ? `€${price}` : 'Price'}</div>
-        <div className="card-amount"><span>Amount available: {amount !== undefined ? amount : '-'}</span></div>
-        <div className={`card-foil${foil ? '' : ' invisible'}`}>{foil ? 'Foil' : ''}</div>
+        <table className="card-table">
+          <thead>
+            <tr>
+              <th>Treatment</th>
+              <th>Price</th>
+              <th>#</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.isArray(cardData) && cardData.length > 0 ? (
+              cardData.map((entry: any, idx: number) => {
+          let priceValue = 'n/a';
+          if (entry.finish === 'foil') priceValue = foilPrice !== undefined ? `€${foilPrice}` : 'n/a';
+          else if (entry.finish === 'nonfoil') priceValue = price !== undefined ? `€${price}` : 'n/a';
+          else if (entry.finish === 'etched') priceValue = 'n/a';
+
+          return (
+            <tr key={idx}>
+              <td>{entry.finish}</td>
+              <td>{priceValue}</td>
+              <td>{entry.amount}</td>
+            </tr>
+          );
+              })
+            ) : (
+              <tr>
+          <td colSpan={4}>No Card Data</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        
+        {/* <div className={`card-foil${foil ? '' : ' invisible'}`}>{foil ? 'Foil' : ''}</div> */}
       </div>
       {showPopup && imageUrl && (
         <div className="card-popup" onClick={() => setShowPopup(false)}>

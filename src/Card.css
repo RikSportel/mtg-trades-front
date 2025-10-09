@@ -45,29 +45,21 @@
   line-height: 1.3em;
   white-space: normal;
 }
-.card-price {
-  margin-top: 4px;
-  color: #666;
-  font-size: 0.7em;
-}
-.card-amount {
-  margin-top: 4px;
-  color: #666;
-  font-size: 0.7em;
-}
-.card-foil {
-  margin-top: 4px;
+
+.card-table {
+  width: 100%;
+  margin-top: 8px;
+  border-collapse: collapse;
   font-weight: bold;
-  color: #6a1b9a;
-  font-size: 0.7em;
-  min-height: 1.2em;
-  height: 1.2em;
-  text-align: center;
-  transition: color 0.2s;
+  font-size: 0.75em;
+  text-align: left;
 }
-.card-foil.invisible {
-  color: transparent;
+.card-table th,
+.card-table td {
+  text-align: left;
 }
+
+
 .card-popup {
   position: fixed;
   top: 0;

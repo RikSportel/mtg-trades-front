@@ -5,7 +5,7 @@ import ForTrade from './ForTrade';
 const TradePage: React.FC = () => {
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState<FilterState>({ name: '', color: '', foil: null });
+  const [filters, setFilters] = useState<FilterState>({ name: '', color: '' });
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_MTG_BACKEND_API_URL}/cards`)
@@ -14,12 +14,12 @@ const TradePage: React.FC = () => {
         const mappedCards = Object.values(data).map((card: any) => {
           const scryfall = card.scryfall || {};
             return {
-            imageUrl: scryfall.image_uris?.normal,
-            name: scryfall.name,
-            price: card.foil ? scryfall.prices?.eur_foil : scryfall.prices?.eur,
-            amount: card.amount,
-            foil: !!card.foil,
-            colors: scryfall.colors || [],
+              imageUrl: scryfall.image_uris?.normal,
+              name: scryfall.name,
+              foilPrice: scryfall.prices?.eur_foil,
+              price: scryfall.prices?.eur, //card.foil ? scryfall.prices?.eur_foil : scryfall.prices?.eur,
+              colors: scryfall.colors || [],
+              cardData: card.finishes
             };
         });
         setCards(mappedCards);
@@ -48,7 +48,7 @@ const TradePage: React.FC = () => {
         if (filters.color === 'Colorless' && card.colors && card.colors.length > 0) return false;
         if (['W','U','B','R','G'].includes(filters.color) && (!card.colors || card.colors[0] !== filters.color || card.colors.length !== 1)) return false;
       }
-      if (filters.foil !== null && card.foil !== filters.foil) return false;
+      //if (filters.foil !== null && card.foil !== filters.foil) return false;
       return true;
     })
     .sort((a, b) => {

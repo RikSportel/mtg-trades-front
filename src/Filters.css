@@ -59,9 +59,7 @@
   background: #222;
   color: #e0e0e0;
 }
-[data-theme="dark"] .filters-row {
-  /* No change needed, inherits container bg */
-}
+
 [data-theme="dark"] .filter-box {
   border-color: #444;
   background: #2a2a2a;

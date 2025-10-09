@@ -5,7 +5,7 @@ import './Filters.css';
 export type FilterState = {
   name: string;
   color: string;
-  foil: boolean | null;
+ //foil: boolean | null;
 };
 
 interface FiltersProps {
@@ -54,7 +54,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             onChange={e => setFilters({ ...filters, name: e.target.value })}
           />
         </div>
-        <div className="filter-box">
+        {/* <div className="filter-box">
           <label className="filter-label">Foil:</label>
           <input
             type="checkbox"
@@ -62,7 +62,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             onChange={e => setFilters({ ...filters, foil: e.target.checked ? true : null })}
           />
           <span className="filter-foil-text">Only Foil</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

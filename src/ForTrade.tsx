@@ -6,9 +6,9 @@ import './ForTrade.css';
 type CardType = {
   imageUrl?: string;
   name?: string;
+  foilPrice?: string;
   price?: string;
-  amount?: number;
-  foil?: boolean;
+  cardData?: any;
 };
 
 interface ForTradeProps {
@@ -28,9 +28,9 @@ const ForTrade: React.FC<ForTradeProps> = ({ cards, loading }) => {
               key={idx}
               imageUrl={card.imageUrl}
               name={card.name}
+              foilPrice={card.foilPrice}
               price={card.price}
-              amount={card.amount}
-              foil={card.foil}
+              cardData={card.cardData}
             />
           ))}
         </>
