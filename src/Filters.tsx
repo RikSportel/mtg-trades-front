@@ -61,17 +61,23 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                       borderRadius: '50%',
                       background: '#fff',
                       boxShadow: isActive ? '0 0 10px 3px gold' : undefined,
-                      cursor: colorlessActive ? 'not-allowed' : 'pointer',
-                      opacity: colorlessActive ? 0.5 : 1,
+                      cursor: 'pointer',
+                      opacity: 1,
                       transition: 'box-shadow 0.2s'
                     }}
                     onClick={() => {
-                      if (colorlessActive) return; // Prevent selecting other colors if colorless is active
+                      let newColors;
+                      if (isActive) {
+                        newColors = filters.color.filter(c => c !== icon.value);
+                      } else {
+                        // If colorless is active, remove it when selecting a color
+                        newColors = colorlessActive
+                          ? [icon.value]
+                          : [...filters.color, icon.value];
+                      }
                       setFilters({
                         ...filters,
-                        color: isActive
-                          ? filters.color.filter(c => c !== icon.value)
-                          : [...filters.color, icon.value]
+                        color: newColors
                       });
                     }}
                   />
