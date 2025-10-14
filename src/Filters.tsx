@@ -1,11 +1,10 @@
-
 import React from 'react';
 import './Filters.css';
 
 export type FilterState = {
   name: string;
-  color: string;
- //foil: boolean | null;
+  color: string[]; // was string
+  //foil: boolean | null;
 };
 
 interface FiltersProps {
@@ -20,27 +19,98 @@ const colorOptions = [
   { value: 'B', label: 'Black' },
   { value: 'R', label: 'Red' },
   { value: 'G', label: 'Green' },
-  { value: 'Multicolor', label: 'Multi' },
   { value: 'Colorless', label: 'Colorless' }
 ];
+
+const svgIcons = [
+  { value: 'W', svgUrl: 'https://svgs.scryfall.io/card-symbols/W.svg' },
+  { value: 'U', svgUrl: 'https://svgs.scryfall.io/card-symbols/U.svg' },
+  { value: 'B', svgUrl: 'https://svgs.scryfall.io/card-symbols/B.svg' },
+  { value: 'R', svgUrl: 'https://svgs.scryfall.io/card-symbols/R.svg' },
+  { value: 'G', svgUrl: 'https://svgs.scryfall.io/card-symbols/G.svg' },
+  { value: 'Colorless', svgUrl: 'https://svgs.scryfall.io/card-symbols/C.svg' } 
+]
 
 const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
   return (
     <div className="filters-container">
-      <div className="filters-row">
-        <div className="filter-box">
-          {colorOptions.map(opt => (
-            <label key={opt.value} className="filter-radio-label">
-              <input
-                type="radio"
-                name="color"
-                value={opt.value}
-                checked={filters.color === opt.value}
-                onChange={() => setFilters({ ...filters, color: opt.value })}
-              />
-              <span className="filter-radio-text">{opt.label}</span>
-            </label>
-          ))}
+      <div className="filters-row" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div>
+          <div style={{ position: 'relative', width: 96, height: 96 }}>
+            {svgIcons
+              .filter(icon => icon.value !== 'Colorless')
+              .map((icon, i) => {
+                const angle = (2 * Math.PI * i) / (svgIcons.length - 1) - Math.PI / 2;
+                const radius = 36;
+                const iconSize = 20;
+                const x = Math.cos(angle) * radius + 48 - iconSize / 2;
+                const y = Math.sin(angle) * radius + 48 - iconSize / 2;
+                const isActive = filters.color.includes(icon.value);
+                const colorlessActive = filters.color.includes('Colorless');
+                return (
+                  <img
+                    key={icon.value}
+                    src={icon.svgUrl}
+                    alt={icon.value}
+                    width={iconSize}
+                    height={iconSize}
+                    style={{
+                      position: 'absolute',
+                      left: x,
+                      top: y,
+                      borderRadius: '50%',
+                      background: '#fff',
+                      boxShadow: isActive ? '0 0 10px 3px gold' : undefined,
+                      cursor: colorlessActive ? 'not-allowed' : 'pointer',
+                      opacity: colorlessActive ? 0.5 : 1,
+                      transition: 'box-shadow 0.2s'
+                    }}
+                    onClick={() => {
+                      if (colorlessActive) return; // Prevent selecting other colors if colorless is active
+                      setFilters({
+                        ...filters,
+                        color: isActive
+                          ? filters.color.filter(c => c !== icon.value)
+                          : [...filters.color, icon.value]
+                      });
+                    }}
+                  />
+                );
+              })}
+
+            {/* Place Colorless in the center */}
+            {(() => {
+              const colorless = svgIcons.find(icon => icon.value === 'Colorless');
+              if (!colorless) return null;
+              const iconSize = 24;
+              const isActive = filters.color.includes(colorless.value);
+              return (
+                <img
+                  key={colorless.value}
+                  src={colorless.svgUrl}
+                  alt={colorless.value}
+                  width={iconSize}
+                  height={iconSize}
+                  style={{
+                    position: 'absolute',
+                    left: 48 - iconSize / 2,
+                    top: 48 - iconSize / 2,
+                    borderRadius: '50%',
+                    background: '#fff',
+                    boxShadow: isActive ? '0 0 10px 3px gold' : undefined,
+                    cursor: 'pointer',
+                    transition: 'box-shadow 0.2s'
+                  }}
+                  onClick={() => {
+                    setFilters({
+                      ...filters,
+                      color: isActive ? [] : ['Colorless']
+                    });
+                  }}
+                />
+              );
+            })()}
+          </div>
         </div>
       </div>
       <div className="filters-row">

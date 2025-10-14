@@ -5,7 +5,7 @@ import ForTrade from './ForTrade';
 const TradePage: React.FC = () => {
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState<FilterState>({ name: '', color: '' });
+  const [filters, setFilters] = useState<FilterState>({ name: '', color: [] });
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_MTG_BACKEND_API_URL}/cards`)
@@ -43,12 +43,22 @@ const TradePage: React.FC = () => {
   const filteredCards = cards
     .filter(card => {
       if (filters.name && !card.name?.toLowerCase().includes(filters.name.toLowerCase())) return false;
-      if (filters.color) {
-        if (filters.color === 'Multicolor' && (!card.colors || card.colors.length <= 1)) return false;
-        if (filters.color === 'Colorless' && card.colors && card.colors.length > 0) return false;
-        if (['W','U','B','R','G'].includes(filters.color) && (!card.colors || card.colors[0] !== filters.color || card.colors.length !== 1)) return false;
+      if (filters.color && filters.color.length > 0) {
+        // Colorless filter
+        if (filters.color.includes('Colorless')) {
+          if (card.colors && card.colors.length > 0) return false;
+        }
+        // Multicolor filter
+        if (filters.color.includes('Multicolor')) {
+          if (!card.colors || card.colors.length <= 1) return false;
+        }
+        // Specific color(s) filter
+        const selectedColors = filters.color.filter(c => ['W','U','B','R','G'].includes(c));
+        if (selectedColors.length > 0) {
+          // Card must have all selected colors (and may have more)
+          if (!card.colors || !selectedColors.every(c => card.colors.includes(c))) return false;
+        }
       }
-      //if (filters.foil !== null && card.foil !== filters.foil) return false;
       return true;
     })
     .sort((a, b) => {
@@ -66,7 +76,7 @@ const TradePage: React.FC = () => {
     });
 
   return (
-    <div>
+    <div style={{ width: '100%', paddingLeft: 32, paddingRight: 32 }}>
       <Filters filters={filters} setFilters={setFilters} />
       <ForTrade cards={filteredCards} loading={loading} />
     </div>
