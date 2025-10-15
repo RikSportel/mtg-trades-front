@@ -27,16 +27,30 @@ function App() {
   };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div>
       <ThemeToggleButton theme={theme === 'dark' ? 'dark' : 'light'} onClick={toggleTheme} />
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px', position: 'relative' }}>
-        <div className="headerdiv" style={{ width: 128, height: 128, borderRadius: '50%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, left: '50%', transform: 'translate(-50%, 0)' }}>
-          <img src={mtgIcon} alt="MTG Icon" width={128} height={128} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
-        </div>
-      </div>
-      <div style={{ flex: 1, width: '100%', marginTop: 32 }}>
-        <TradePage />
-      </div>
+      <img
+        src={mtgIcon}
+        alt="MTG Icon"
+        width={64}
+        height={64}
+        style={{
+          borderRadius: '50%',
+          position: 'fixed',
+          top: '5px',
+          left: '50%',
+          transform: 'translateX(-50%)'
+        }}
+      />
+      <TradePage 
+        style={{
+          width: '100%',
+          position: 'fixed',
+          bottom: '0',
+          height: 'calc(100vh - 110px)',
+          overflowY: 'auto',
+        }}
+      />  
     </div>
   );
 }

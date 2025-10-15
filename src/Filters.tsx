@@ -12,39 +12,33 @@ interface FiltersProps {
   setFilters: (filters: FilterState) => void;
 }
 
-const colorOptions = [
-  { value: '', label: 'Any' },
-  { value: 'W', label: 'White' },
-  { value: 'U', label: 'Blue' },
-  { value: 'B', label: 'Black' },
-  { value: 'R', label: 'Red' },
-  { value: 'G', label: 'Green' },
-  { value: 'Colorless', label: 'Colorless' }
-];
-
 const svgIcons = [
-  { value: 'W', svgUrl: 'https://svgs.scryfall.io/card-symbols/W.svg' },
-  { value: 'U', svgUrl: 'https://svgs.scryfall.io/card-symbols/U.svg' },
-  { value: 'B', svgUrl: 'https://svgs.scryfall.io/card-symbols/B.svg' },
-  { value: 'R', svgUrl: 'https://svgs.scryfall.io/card-symbols/R.svg' },
-  { value: 'G', svgUrl: 'https://svgs.scryfall.io/card-symbols/G.svg' },
-  { value: 'Colorless', svgUrl: 'https://svgs.scryfall.io/card-symbols/C.svg' } 
+  { value: 'W', svgUrl: 'https://svgs.scryfall.io/card-symbols/W.svg', shadowColor: 'Gold' },
+  { value: 'U', svgUrl: 'https://svgs.scryfall.io/card-symbols/U.svg', shadowColor: 'CornflowerBlue' },
+  { value: 'B', svgUrl: 'https://svgs.scryfall.io/card-symbols/B.svg', shadowColor: 'DarkGray' },
+  { value: 'R', svgUrl: 'https://svgs.scryfall.io/card-symbols/R.svg', shadowColor: 'IndianRed' },
+  { value: 'G', svgUrl: 'https://svgs.scryfall.io/card-symbols/G.svg', shadowColor: 'MediumSeaGreen' },
+  { value: 'Colorless', svgUrl: 'https://svgs.scryfall.io/card-symbols/C.svg', shadowColor: 'SlateGray' } 
 ]
 
 const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
+  // Responsive wheel size
+  const wheelSize = window.innerWidth < 600 ? 64 : 96;
+  const wheelRadius = wheelSize / 2 - 12;
+  const iconSize = window.innerWidth < 600 ? 14 : 20;
+  
   return (
-    <div className="filters-container">
-      <div className="filters-row" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div className="filters-container" style={{ position: 'fixed', top: 12, left: 12, zIndex: 1000, padding: 8, minWidth: wheelSize, minHeight: wheelSize }}>
+      <div className="filters-row">
         <div>
-          <div style={{ position: 'relative', width: 96, height: 96 }}>
+          <div style={{ position: 'relative', width: wheelSize, height: wheelSize }}>
             {svgIcons
               .filter(icon => icon.value !== 'Colorless')
               .map((icon, i) => {
                 const angle = (2 * Math.PI * i) / (svgIcons.length - 1) - Math.PI / 2;
-                const radius = 36;
-                const iconSize = 20;
-                const x = Math.cos(angle) * radius + 48 - iconSize / 2;
-                const y = Math.sin(angle) * radius + 48 - iconSize / 2;
+                const radius = wheelRadius;
+                const x = Math.cos(angle) * radius + wheelSize / 2 - iconSize / 2;
+                const y = Math.sin(angle) * radius + wheelSize / 2 - iconSize / 2;
                 const isActive = filters.color.includes(icon.value);
                 const colorlessActive = filters.color.includes('Colorless');
                 return (
@@ -60,7 +54,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                       top: y,
                       borderRadius: '50%',
                       background: '#fff',
-                      boxShadow: isActive ? '0 0 10px 3px gold' : undefined,
+                      boxShadow: isActive ? `0 0 10px 3px ${icon.shadowColor}` : undefined,
                       cursor: 'pointer',
                       opacity: 1,
                       transition: 'box-shadow 0.2s'
@@ -88,7 +82,6 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             {(() => {
               const colorless = svgIcons.find(icon => icon.value === 'Colorless');
               if (!colorless) return null;
-              const iconSize = 24;
               const isActive = filters.color.includes(colorless.value);
               return (
                 <img
@@ -99,11 +92,11 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                   height={iconSize}
                   style={{
                     position: 'absolute',
-                    left: 48 - iconSize / 2,
-                    top: 48 - iconSize / 2,
+                    left: wheelSize / 2 - iconSize / 2,
+                    top: wheelSize / 2 - iconSize / 2,
                     borderRadius: '50%',
                     background: '#fff',
-                    boxShadow: isActive ? '0 0 10px 3px gold' : undefined,
+                    boxShadow: isActive ? `0 0 10px 3px ${colorless.shadowColor}` : undefined,
                     cursor: 'pointer',
                     transition: 'box-shadow 0.2s'
                   }}
@@ -121,24 +114,15 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
       </div>
       <div className="filters-row">
         <div className="filter-box flex">
-          <label className="filter-label">Name:</label>
           <input
             type="text"
             placeholder="Name"
             value={filters.name}
             className="filter-input"
+            style={{ width: '90px', maxWidth: '100%' }}
             onChange={e => setFilters({ ...filters, name: e.target.value })}
           />
         </div>
-        {/* <div className="filter-box">
-          <label className="filter-label">Foil:</label>
-          <input
-            type="checkbox"
-            checked={!!filters.foil}
-            onChange={e => setFilters({ ...filters, foil: e.target.checked ? true : null })}
-          />
-          <span className="filter-foil-text">Only Foil</span>
-        </div> */}
       </div>
     </div>
   );
